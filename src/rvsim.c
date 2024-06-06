@@ -10,5 +10,6 @@ int main(int argc, char *argv[])
     machine_load_program(&m, argv[1]);
 
     printf("entry: 0x%08lx\n", m.mmu.entry);
+    printf("host_alloc: 0x%08lx\n", m.mmu.host_alloc);
     return 0;
 }
