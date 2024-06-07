@@ -56,3 +56,8 @@ rvsim
 out/
 core
 userprog/
+
+# misc
+GTAGS
+GRTAGS
+GPATH
