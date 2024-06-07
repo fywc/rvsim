@@ -145,6 +145,34 @@ static void func_auipc(state_t *state, insn_t *insn)
     state->gp_regs[insn->rd] = val;
 }
 
+static void func_sb(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    *(u8 *)TO_HOST(rs1 + insn->imm) = (u8)rs2;
+}
+
+static void func_sh(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    *(u16 *)TO_HOST(rs1 + insn->imm) = (u16)rs2;
+}
+
+static void func_sw(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    *(u32 *)TO_HOST(rs1 + insn->imm) = (u32)rs2;
+}
+
+static void func_sd(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    *(u64 *)TO_HOST(rs1 + insn->imm) = (u8)rs2;
+}
+
 static func_t *funcs[] = {
     func_lb,
     func_lh,
