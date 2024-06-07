@@ -2,7 +2,19 @@
 
 typedef void (func_t)(state_t *, insn_t *);
 
-static func_t *funcs[] = {};
+static void func_empty(state_t *state, insn_t *insn) {}
+
+// lb -> load byte
+static void func_lb(state_t *state, insn_t *insn)
+{
+
+}
+
+
+static func_t *funcs[] = {
+    func_lb,
+    func_empty,
+};
 
 void exec_block_interp(state_t *state)
 {
