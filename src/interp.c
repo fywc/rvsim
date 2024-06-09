@@ -375,6 +375,98 @@ static void func_sraw(state_t *state, insn_t *insn)
     state->gp_regs[insn->rd] = (i64)(i32)((i32)rs1 >> (rs2 & 0x1f));
 }
 
+static void func_beq(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    u64 target_addr = state->pc + (i64)insn->imm;
+    if ((u64)rs1 == (u64)rs2) {
+        state->reenter_pc = state->pc = target_addr;
+        state->exit_reason = direct_branch;
+        insn->cont = true;
+    }
+}
+
+static void func_bne(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    u64 target_addr = state->pc + (i64)insn->imm;
+    if ((u64)rs1 != (u64)rs2) {
+        state->reenter_pc = state->pc = target_addr;
+        state->exit_reason = direct_branch;
+        insn->cont = true;
+    }
+}
+
+static void func_blt(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    u64 target_addr = state->pc + (i64)insn->imm;
+    if ((i64)rs1 < (i64)rs2) {
+        state->reenter_pc = state->pc = target_addr;
+        state->exit_reason = direct_branch;
+        insn->cont = true;
+    }
+}
+
+static void func_bge(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    u64 target_addr = state->pc + (i64)insn->imm;
+    if ((i64)rs1 >= (i64)rs2) {
+        state->reenter_pc = state->pc = target_addr;
+        state->exit_reason = direct_branch;
+        insn->cont = true;
+    }
+}
+
+static void func_bltu(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    u64 target_addr = state->pc + (i64)insn->imm;
+    if ((u64)rs1 < (u64)rs2) {
+        state->reenter_pc = state->pc = target_addr;
+        state->exit_reason = direct_branch;
+        insn->cont = true;
+    }
+}
+
+static void func_bgeu(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    u64 rs2 = state->gp_regs[insn->rs2];
+    u64 target_addr = state->pc + (i64)insn->imm;
+    if ((i64)rs1 >= (i64)rs2) {
+        state->reenter_pc = state->pc = target_addr;
+        state->exit_reason = direct_branch;
+        insn->cont = true;
+    }
+}
+
+static void func_jalr(state_t *state, insn_t *insn)
+{
+    u64 rs1 = state->gp_regs[insn->rs1];
+    state->gp_regs[insn->rd] = state->pc + (insn->rvc ? 2 : 4);
+    state->exit_reason = indirect_branch;
+    state->reenter_pc = (rs1 + (i64)insn->imm) & ~(u64)1;
+}
+
+static void func_jal(state_t *state, insn_t *insn)
+{
+    state->gp_regs[insn->rd] = state->pc + (insn->rvc ? 2 : 4);
+    state->exit_reason = direct_branch;
+    state->reenter_pc = state->pc = state->pc + (i64)insn->imm;
+}
+
+static void func_ecall(state_t *state, insn_t *insn)
+{
+    state->exit_reason = ecall;
+    state->reenter_pc = state->pc + 4;
+}
 
 static func_t *funcs[] = {
     func_lb,
