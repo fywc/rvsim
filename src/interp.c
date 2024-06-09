@@ -468,6 +468,25 @@ static void func_ecall(state_t *state, insn_t *insn)
     state->reenter_pc = state->pc + 4;
 }
 
+#define FUNC()                         \
+    switch (insn->csr) {               \
+    case fflags:                       \
+    case frm:                          \
+    case fcsr:                         \
+        break;                         \
+    default: fatal("unsupported csr"); \
+    }                                  \
+    state->gp_regs[insn->rd] = 0;      \
+
+static void func_csrrw(state_t *state, insn_t *insn) { FUNC(); }
+static void func_csrrs(state_t *state, insn_t *insn) { FUNC(); }
+static void func_csrrc(state_t *state, insn_t *insn) { FUNC(); }
+static void func_csrrwi(state_t *state, insn_t *insn) { FUNC(); }
+static void func_csrrsi(state_t *state, insn_t *insn) { FUNC(); }
+static void func_csrrci(state_t *state, insn_t *insn) { FUNC(); }
+
+#undef FUNC
+
 static func_t *funcs[] = {
     func_lb,
     func_lh,
