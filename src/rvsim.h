@@ -100,6 +100,12 @@ enum exit_reason_t {
     ecall,
 };
 
+enum csr_t {
+    fflags = 0x001,
+    frm    = 0x002,
+    fcsr   = 0x003,
+};
+
 typedef struct {
     enum exit_reason_t exit_reason;
     u64 reenter_pc;
