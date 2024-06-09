@@ -38,7 +38,7 @@ enum insn_type_t {
     insn_addi, insn_slli, insn_slti, insn_sltiu, insn_xori, insn_srli, insn_srai, insn_ori, insn_andi, insn_addiw, insn_slliw, insn_srliw, insn_sraiw, insn_auipc,
     insn_sb, insn_sh, insn_sw, insn_sd,
     insn_add, insn_sll, insn_slt, insn_sltu, insn_xor, insn_srl, insn_or, insn_and,
-    insn_mul, insn_mulh, insn_mulhsu, insn_mulhu, insn_div, insn_divu, insn_rem, insn_remu,
+    insn_mul, insn_mulh, insn_mulhu, insn_mulhsu, insn_div, insn_divu, insn_rem, insn_remu,
     insn_sub, insn_sra, insn_lui,
     insn_addw, insn_sllw, insn_srlw, insn_mulw, insn_divw, insn_divuw, insn_remw, insn_remuw, insn_subw, insn_sraw,
     insn_beq, insn_bne, insn_blt, insn_bge, insn_bltu, insn_bgeu,
