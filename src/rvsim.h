@@ -26,6 +26,8 @@
 #define MIN(x, y)       ((y) > (x) ? (x) : (y))
 #define MAX(x, y)       ((y) < (x) ? (x) : (y))
 
+#define ARRAY_SIZE(x)   (sizeof(x)/sizeof((x)[0]))
+
 #define GUEST_MEMORY_OFFSET 0x088800000000ULL
 
 #define TO_HOST(addr)  (addr + GUEST_MEMORY_OFFSET)
@@ -128,6 +130,16 @@ typedef struct {
     mmu_t mmu;
 } machine_t;
 
+inline u64 machine_get_gp_reg(machine_t *m, i32 reg) {
+    assert(reg >= 0 && reg < num_gp_regs);
+    return m->state.gp_regs[reg];
+}
+
+inline void machine_set_gp_reg(machine_t *m, i32 reg, u64 data) {
+    assert(reg >= 0 && reg < num_gp_regs);
+    m->state.gp_regs[reg] = data;
+}
+
 enum exit_reason_t machine_step(machine_t *);
 void machine_load_program(machine_t *, char *);
 void machine_setup(machine_t *, int argc, char **);
@@ -143,3 +155,8 @@ void exec_block_interp(state_t *);
 */
 
 void insn_decode(insn_t *, u32);
+
+/**
+ * syscall.c
+*/
+u64 do_syscall(machine_t *, u64);

@@ -440,7 +440,7 @@ static void func_bgeu(state_t *state, insn_t *insn)
     u64 rs1 = state->gp_regs[insn->rs1];
     u64 rs2 = state->gp_regs[insn->rs2];
     u64 target_addr = state->pc + (i64)insn->imm;
-    if ((i64)rs1 >= (i64)rs2) {
+    if ((u64)rs1 >= (u64)rs2) {
         state->reenter_pc = state->pc = target_addr;
         state->exit_reason = direct_branch;
         insn->cont = true;
@@ -562,10 +562,15 @@ static func_t *funcs[] = {
     func_empty,
 };
 
+static int iter = 0;
+
 void exec_block_interp(state_t *state)
 {
     static insn_t insn = {0};
     while (true) {
+        iter++;
+        printf("%d:%p\n", iter, (u64 *)TO_HOST(state->pc));
+        printf("x1 : %lu, type is %d\n", state->gp_regs[1], insn.type);
         u32 inst_data = *(u32 *)TO_HOST(state->pc);
         insn_decode(&insn, inst_data);
 

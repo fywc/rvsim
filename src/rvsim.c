@@ -17,6 +17,11 @@ int main(int argc, char *argv[])
     while (true) {
         exit_reason = machine_step(&m);
         assert(exit_reason == ecall);
+
+        u64 syscall = machine_get_gp_reg(&m, a7);
+        fatalf("syscall %lu", syscall);
+        u64 ret = do_syscall(&m, syscall);
+        machine_set_gp_reg(&m, a0, ret);
     }
     return 0;
 }

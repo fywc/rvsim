@@ -23,6 +23,7 @@ enum exit_reason_t machine_step(machine_t *m)
         assert(m->state.exit_reason != none);
 
         if (m->state.exit_reason == indirect_branch || m->state.exit_reason == direct_branch) {
+            m->state.pc = m->state.reenter_pc;
             continue;
         }
 
