@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
 
     machine_t m = {0};
     machine_load_program(&m, argv[1]);
+    machine_setup(&m, argc, argv);
 
     printf("entry: 0x%08lx\n", m.mmu.entry);
     printf("host_alloc: 0x%08lx\n", m.mmu.host_alloc);

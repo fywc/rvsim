@@ -88,6 +88,12 @@ typedef struct {
 } mmu_t;
 
 void mmu_load_elf(mmu_t *, int);
+u64 mmu_alloc(mmu_t *, i64);
+
+inline void mmu_write(u64 addr, u8 *data, size_t len)
+{
+    memcpy((void *)TO_HOST(addr), (void *)data, len);
+}
 
 /**
  * state.c
@@ -124,6 +130,7 @@ typedef struct {
 
 enum exit_reason_t machine_step(machine_t *);
 void machine_load_program(machine_t *, char *);
+void machine_setup(machine_t *, int argc, char **);
 
 /**
  * interp.c

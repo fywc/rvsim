@@ -495,6 +495,8 @@ static func_t *funcs[] = {
     func_lbu,
     func_lhu,
     func_lwu,
+    func_empty,  // fence
+    func_empty,  // fence_i
     func_addi,
     func_slli,
     func_slti,
